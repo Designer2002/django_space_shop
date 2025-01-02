@@ -1,0 +1,142 @@
+/* General Styles */
+body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(135deg, #2d2d4e, #3c3c73);
+    color: #ffffff;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: #000000;
+    border-bottom: 2px solid #46128b;
+}
+
+.navbar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #cc00ff;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #a200ff;
+}
+
+/* Main Content */
+.product-content {
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.product-header {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.product-image {
+    width: 300px;
+    border-radius: 10px;
+    border: 2px solid #00fff2;
+}
+
+.product-details {
+    flex: 1;
+}
+
+.product-details h1 {
+    font-size: 36px;
+    color: #0011ff;
+    margin-bottom: 10px;
+}
+
+.product-price {
+    font-size: 28px;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.product-description {
+    font-size: 18px;
+    color: #cccccc;
+    margin-bottom: 20px;
+}
+
+.add-to-cart-btn {
+    background: #0044ff;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    transition: background 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background: #5800e6;
+}
+
+/* Product Specifications */
+.product-specs {
+    background: #2d2d4e;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #32015a;
+}
+
+.product-specs h2 {
+    font-size: 24px;
+    color: #585ad4;
+    margin-bottom: 15px;
+}
+
+.product-specs ul {
+    list-style: none;
+    padding: 0;
+}
+
+.product-specs li {
+    font-size: 18px;
+    color: #cccccc;
+    margin: 5px 0;
+}
+
+/* Footer */
+.footer {
+    background: #000000;
+    text-align: center;
+    padding: 10px;
+    border-top: 2px solid #22063d;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    color: #ffffff;
+}

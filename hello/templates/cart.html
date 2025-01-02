@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    
+
+    {% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/auth.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cart.css' %}" />
+    <link rel="icon" href="{% static 'images/cigarette.ico' %}">
+    {% endblock %}
+    {% block extrascripts %}
+    <script src="{% static 'js/auth.js' %}" type="text/JavaScript" defer></script>   
+    {% endblock %}
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">SpaceShop</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'catalog' %}">Catalog</a></li>
+            <li><a href="#">Cart</a></li>
+            <li><a id="login" href="#">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="cart-content">
+        <h1>Your Shopping Cart</h1>
+        <div class="cart-items">
+            <!-- Example Item -->
+            <div class="cart-item">
+                <img src="{% static 'images/gun2.png' %}" alt="Laser Gun">
+                <div class="item-details">
+                    <h2>Laser Gun</h2>
+                    <p>Price: $200</p>
+                    <p>Quantity: 1</p>
+                </div>
+                <button class="remove-btn">Remove</button>
+            </div>
+            <!-- Add more items dynamically -->
+        </div>
+
+        <!-- Total Section -->
+        <div class="cart-total">
+            <h2>Total: $200</h2>
+            <button class="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 SpaceShop. All rights reserved.</p>
+    </footer>
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <span class="close" id="close-login">&times;</span>
+            <h2>Login</h2>
+            <form>
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" placeholder="Enter your email" required>
+                
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" placeholder="Enter your password" required>
+                
+                <button type="submit" class="auth-btn">Login</button>
+            </form>
+            <button id="register" class="ask">Do not have an account? Register</button>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="register-modal">
+        <div class="modal-content">
+            <span class="close" id="close-register">&times;</span>
+            <h2>Register</h2>
+            <form>
+                <label for="register-email">Email</label>
+                <input type="email" id="register-email" placeholder="Enter your email" required>
+                
+                <label for="register-password">Password</label>
+                <input type="password" id="register-password" placeholder="Create a password" required>
+                
+                <label for="register-confirm-password">Confirm Password</label>
+                <input type="password" id="register-confirm-password" placeholder="Confirm your password" required>
+                
+                <button type="submit" class="auth-btn">Register</button>
+            </form>
+            <button id="login2" class="ask">Do not have an account? Login</button>
+        </div>
+    </div>
+</body>
+</html>

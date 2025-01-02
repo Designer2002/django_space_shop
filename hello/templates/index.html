@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <title>Futuristic Space Shop</title>
+    
+
+    {% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/auth.css' %}" />
+    <link rel="icon" href="{% static 'images/cigarette.ico' %}">
+    {% endblock %}
+    {% block extrascripts %}
+    <script src="{% static 'js/auth.js' %}" type="text/JavaScript" defer></script>   
+    {% endblock %}
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    
+    
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">SpaceShop</div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="{% url 'catalog' %}">Catalog</a></li>
+            <li><a href="{% url 'cart' %}">Cart</a></li>
+            
+            <li><a href="#" id="login">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Carousel -->
+        <div class="carousel">
+            <div class="carousel-inner">
+                <input class="carousel-open" type="radio" id="carousel-1" name="carousel" aria-hidden="true" hidden="" checked="checked">
+                <div class="carousel-item">
+                    <img src="{% static 'images/space.jpg' %}">
+                </div>
+                <input class="carousel-open" type="radio" id="carousel-2" name="carousel" aria-hidden="true" hidden="">
+                <div class="carousel-item">
+                    <img src="{% static 'images/space (2).jpg' %}">
+                </div>
+                <input class="carousel-open" type="radio" id="carousel-3" name="carousel" aria-hidden="true" hidden="">
+                <div class="carousel-item">
+                    <img src="{% static 'images/space (1).png' %}">
+                </div>
+                <label for="carousel-3" class="carousel-control prev control-1">‹</label>
+                <label for="carousel-2" class="carousel-control next control-1">›</label>
+                <label for="carousel-1" class="carousel-control prev control-2">‹</label>
+                <label for="carousel-3" class="carousel-control next control-2">›</label>
+                <label for="carousel-2" class="carousel-control prev control-3">‹</label>
+                <label for="carousel-1" class="carousel-control next control-3">›</label>
+                <ol class="carousel-indicators">
+                    <li>
+                        <label for="carousel-1" class="carousel-bullet">•</label>
+                    </li>
+                    <li>
+                        <label for="carousel-2" class="carousel-bullet">•</label>
+                    </li>
+                    <li>
+                        <label for="carousel-3" class="carousel-bullet">•</label>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Weekly Items Section -->
+        <section class="weekly-items">
+            <h1>Items of the Week</h1>
+            <div class="item-cards">
+                {% for weapon in weapons %}
+                    <a class="a" href="{% url 'product' name=weapon.name %}">
+                        <div class="item-card">
+                            <img src="{% static 'images/gun1.jpg' %}" alt="Laser Gun">
+                            <h2>{{weapon.name}}</h2>
+                            <p>Power: {{weapon.power_consumption}}</p>
+                            <p>Fire Rate: {{weapon.fire}}</p>
+                            <p>Price: {{weapon.price}}$</p>
+                        </div>
+                    </a>
+                {% endfor %}
+                
+            </div>
+        </section>
+
+        <!-- Shop Information -->
+        <section class="shop-info">
+            <h2>About Our Shop</h2>
+            <p>We provide the best futuristic weapons in the galaxy. Equip yourself for the adventures ahead.</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 SpaceShop. All rights reserved.</p>
+    </footer>
+
+        <!-- Login Modal -->
+        <div class="modal" id="login-modal">
+            <div class="modal-content">
+                <span class="close" id="close-login">&times;</span>
+                <h2>Login</h2>
+                <form id="logform" method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
+
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+
+                    <button type="submit" class="auth-btn">Login</button>
+                </form>
+                <div id="wrong">Incorrect input data. Try again.</div>
+                <button id="register" class="ask">Do not have an account? Register</button>
+            </div>
+        </div>
+
+    
+        <!-- Register Modal -->
+        <div class="modal" id="register-modal">
+            <div class="modal-content">
+                <span class="close" id="close-register">&times;</span>
+                <h2>Register</h2>
+                <form id="regform" method="POST" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="email" placeholder="Enter your email" required>
+        
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" name="password" placeholder="Create a password" required>
+        
+                    <label for="register-confirm-password">Confirm Password</label>
+                    <input type="password" id="register-confirm-password" name="confirm_password" placeholder="Confirm your password" required>
+        
+                    <button type="submit" class="auth-btn">Register</button>
+                </form>
+                <div id="wrong2">Incorrect input data. Try again.</div>
+                <button id="login2" class="ask">Already have an account? Login</button>
+            </div>
+        </div>
+</body>
+</html>
