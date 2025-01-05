@@ -14,7 +14,7 @@
     <link rel="icon" href="{% static 'images/cigarette.ico' %}">
     {% endblock %}
     {% block extrascripts %}
-    <script src="{% static 'js/auth.js' %}" type="text/JavaScript" defer></script>   
+    <script src="{% static 'js/auth.js' %}" type="text/JavaScript" defer></script>
     {% endblock %}
     
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
@@ -28,9 +28,23 @@
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
             <li><a href="{% url 'catalog' %}">Catalog</a></li>
+            {% if user.is_authenticated %}
             <li><a href="{% url 'cart' %}">Cart</a></li>
-            
-            <li><a href="#" id="login">Login</a></li>
+            {% else %}
+            <li><a href="#" id="logincart">Cart</a></li>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <li><a>
+                <form id='logout' action="{% url 'logout' %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit">Logout</button>
+                </form>
+            </a></li>
+            {% else %}
+            <li><a href="#" id="loginlogin">Login</a></li>
+            {% endif %}
+
+
         </ul>
     </nav>
 
@@ -130,6 +144,8 @@
                 <h2>Register</h2>
                 <form id="regform" method="POST" action="{% url 'register' %}">
                     {% csrf_token %}
+                    <label for="register-name">Name</label>
+                    <input type="text" id="register-name" name="name" placeholder="Enter your name" required>
                     <label for="register-email">Email</label>
                     <input type="email" id="register-email" name="email" placeholder="Enter your email" required>
         

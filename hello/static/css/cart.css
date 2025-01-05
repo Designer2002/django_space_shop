@@ -40,7 +40,28 @@ body {
     font-size: 18px;
     transition: color 0.3s ease;
 }
-
+.nav-links button
+{
+background-color: transparent;
+border: none;
+font-family: 'Orbitron', sans-serif;
+text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    transition: color 0.3s ease;
+    display: inline;
+    margin-top: -1px;
+}
+.shop
+{
+    background: cyan;
+    color: ffffff;
+    font-size: 18px;
+}
+.nav-links button:hover {
+cursor: pointer;
+    color: #0056ff;
+}
 .nav-links a:hover {
     color: #c1da66;
 }

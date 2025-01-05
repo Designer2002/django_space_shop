@@ -21,3 +21,12 @@ class Weapon(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CartItem(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # Ссылка на владельца (пользователя)
+    weapon = models.ForeignKey(Weapon, on_delete=models.CASCADE)  # Ссылка на объект (оружие)
+    quantity = models.PositiveIntegerField(default=1)  # Количество оружия в корзине
+
+    def __str__(self):
+        return f"{self.user.username}'s cart: {self.quantity} x {self.weapon.name}"

@@ -2,18 +2,73 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginModal = document.getElementById("login-modal");
     const registerModal = document.getElementById("register-modal");
 
-    const openLoginBtn = document.getElementById("login");
+    const loginBtn = document.getElementById("loginlogin");
+    const loginCartBtn = document.getElementById("logincart");
+    const openLoginBtns = [loginBtn, loginCartBtn]
     const openLoginBtn2 = document.getElementById("login2");
     const openRegisterBtn = document.getElementById("register");
+    console.log(openLoginBtns)
 
     const closeLoginBtn = document.getElementById("close-login");
     const closeRegisterBtn = document.getElementById("close-register");
     const regform = document.getElementById('regform')
     const logform = document.getElementById('logform')
+    const logoutform = document.querySelectorAll('#logout')
     const wrong = document.getElementById('wrong')
-    wrong.style = "margin-top: 10px;margin-bottom: 5px;color:rgb(255, 106, 198);display: none !important;"
+    if (wrong !== null) {
+        console.log("Элемент 'wrong' найден");
+        wrong.style.cssText = "margin-top: 10px; margin-bottom: 5px; color: rgb(255, 106, 198); display: none !important;";
+    } else {
+        console.log("Элемент 'wrong' не найден");
+    }
     const wrong2 = document.getElementById('wrong2')
-    wrong2.style = "margin-top: 10px;margin-bottom: 5px;color:rgb(255, 106, 198);display: none !important;"
+    if (wrong2 !== null)
+        wrong2.style = "margin-top: 10px;margin-bottom: 5px;color:rgb(255, 106, 198);display: none !important;"
+
+//    const isAuthenticated ="{{ user.is_authenticated }}";
+//
+//    // Если пользователь не аутентифицирован, открываем модальное окно
+//    if (!isAuthenticated) {
+//        loginModal.style.display = "flex";
+//        };
+
+    if (logoutform !== null)
+    {
+        logoutform.forEach((l) => {
+
+
+        l.addEventListener('submit', (event) => {
+
+            event.preventDefault(); // Останавливаем стандартное поведение формы
+            // Получаем данные формы
+            const formData = new FormData(l);
+
+            // Отправляем данные формы с помощью Fetch API
+
+
+            fetch(l.action, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+
+                    console.log(data.redirect_url)
+                    window.location.href = data.redirect_url;
+                } else {
+                    console.log("ERROR")
+                }
+            })
+            .catch(error => {
+
+                console.log(error);
+
+            });
+        });
+        });
+    }
+
 
     logform.addEventListener('submit', (event) => {
         event.preventDefault(); // Останавливаем стандартное поведение формы
@@ -32,12 +87,16 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.success) {
                 window.location.href = data.redirect_url;
             } else {
-                wrong.style.display = "block";
+                if (wrong !== null)
+                    wrong.style.display = "block";
             }
         })
         .catch(error => {
-            wrong.textContent = "A network error has occured.";
-            wrong.style.display = "block";
+            if (wrong !== null)
+            {
+                wrong.textContent = "A network error has occured.";
+                wrong.style.display = "block";
+            }
             console.log(error);
             
         });
@@ -52,14 +111,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    openLoginBtn.addEventListener("click", () => {
-        if(loginModal.style.display == "flex")
-        {
-            loginModal.style.display = "none";
-        }
-            loginModal.style.display = "flex";
-            
+    openLoginBtns.forEach((openLoginBtn) =>
+    {
+        openLoginBtn.addEventListener("click", () => {
+
+            if(loginModal.style.display == "flex")
+            {
+                loginModal.style.display = "none";
+            }
+                loginModal.style.display = "flex";
+
+        });
     });
+
     openLoginBtn2.addEventListener("click", () => {
         if(registerModal.style.display == "flex")
         {
@@ -117,6 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         })
         .catch(error => {
+            if (wrong2 !== null)
             wrong2.style.display = "block";
             console.error("Registration error:", error);
         });

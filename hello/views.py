@@ -1,11 +1,13 @@
-from django.shortcuts import redirect, render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, render, get_object_or_404
 from hello.db_queries import get_random_two
 from django.views.generic.base import View
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.http import JsonResponse
 from django.urls import reverse
 
 from hello.forms import LoginForm, RegisterForm
+from hello.models import CartItem
 
 
 class IndexView(View):
@@ -21,11 +23,23 @@ class IndexView(View):
             request,
             'index.html',
             {
-                'weapons': random_weapons
+                'weapons': random_weapons,
+                'user': request.user
             }
         )
-    
-    
+
+
+class AdminView(View):
+    def get(self, request, *args, **kwargs):
+        return render(
+            request,
+            'admin.html',
+            {
+                'user': request.user
+            }
+        )
+
+
 class CatalogView(View):
     def get(self, request, *args, **kwargs):
         from hello.models import Weapon
@@ -36,17 +50,37 @@ class CatalogView(View):
             request,
             'catalog.html',
             {
-                'weapons': weapons
+                'weapons': weapons,
+                'user': request.user
             }
         )
 
+
 class CartView(View):
     def get(self, request, *args, **kwargs):
-        print(request.build_absolute_uri()) #optional
+        # Получаем текущего пользователя
+        user = request.user
+
+        # Получаем все записи корзины для текущего пользователя
+        cart = CartItem.objects.filter(user=user)  # Здесь мы фильтруем по пользователю
+
+        print(request.build_absolute_uri())  # optional
+
         return render(
             request,
-            'cart.html'
+            'cart.html',
+            {
+                'cartitems': cart,  # Передаем записи корзины в контекст
+                'user': user
+            }
         )
+
+    def remove_from_cart(request, item_id):
+        if request.method == 'POST':
+            # Получаем элемент корзины по item_id
+            cart_item = get_object_or_404(CartItem, id=item_id, user=request.user)
+            cart_item.delete()  # Удаляем элемент из корзины
+            return redirect('cart_view')  # Перенаправляем на представление корзин
 
 class ProductView(View):
     def get(self, request, name=None, *args, **kwargs):
@@ -61,6 +95,10 @@ class ProductView(View):
             }
         )
 
+class LogoutView(View):
+    def post(self, request):
+        logout(request)
+        return JsonResponse({'success': True, 'redirect_url': reverse('home')})
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
@@ -86,8 +124,10 @@ class LoginView(View):
                 if user is not None:
                     try:
                         login(request, user)
-                        if user.is_admin:
+                        if user.is_superuser:
                             return JsonResponse({'success': True, 'redirect_url': reverse('admin')})
+                        elif user.is_admin:
+                            return JsonResponse({'success': True, 'redirect_url': reverse('siteadmin')})
                         else:
                             return JsonResponse({'success': True, 'redirect_url': reverse('catalog')})
                     except Exception as e:
@@ -106,9 +146,11 @@ class LoginView(View):
 class RegisterView(View):
     def post(self, request):
         from hello.models import CustomUser
-        from hello.mail_service import send_mail
+        import web_project.settings
+        from django.core.mail import send_mail
         form = RegisterForm(request.POST)
         if form.is_valid():
+            name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             confirm_password = form.cleaned_data['confirm_password']
@@ -117,16 +159,11 @@ class RegisterView(View):
                 return JsonResponse({'success': False, 'error': 'Passwords do not match'}, status=400)
             
             try:
-                user = CustomUser.objects.create_user(username=email, email=email, password=password)
+                user = CustomUser.objects.create_user(username=name, email=email, password=password)
                 login(request, user)
                 
                 # Отправка письма
-                send_mail(
-                    email=email,
-                    subject='Successful Registration',
-                    text=f'Hello, {email}!\n\nYou have successfully registered at SpaceShop.'
-                )
-                
+                send_mail("Succesful Registration", "Hello there and welcome! Now you are a user of the Space Shop!", web_project.settings.EMAIL_HOST_USER, [email])
                 return JsonResponse({'success': True, 'redirect_url': reverse('catalog')})
             except Exception as e:
                 print("ERROR:", e)

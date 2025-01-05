@@ -29,7 +29,16 @@
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'catalog' %}">Catalog</a></li>
             <li><a href="{% url 'cart' %}">Cart</a></li>
+            {% if user.is_authenticated %}
+            <li><a>
+                <form id='logout' action="{% url 'logout' %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit">Logout</button>
+                </form>
+            </a></li>
+            {% else %}
             <li><a href="#" id="login">Login</a></li>
+            {% endif %}
         </ul>
     </nav>
 
@@ -64,42 +73,50 @@
     <footer class="footer">
         <p>&copy; 2024 SpaceShop. All rights reserved.</p>
     </footer>
-    <div class="modal" id="login-modal">
-        <div class="modal-content">
-            <span class="close" id="close-login">&times;</span>
-            <h2>Login</h2>
-            <form>
-                <label for="login-email">Email</label>
-                <input type="email" id="login-email" placeholder="Enter your email" required>
-                
-                <label for="login-password">Password</label>
-                <input type="password" id="login-password" placeholder="Enter your password" required>
-                
-                <button type="submit" class="auth-btn">Login</button>
-            </form>
-            <button id="register" class="ask">Do not have an account? Register</button>
-        </div>
-    </div>
+    <!-- Login Modal -->
+        <div class="modal" id="login-modal">
+            <div class="modal-content">
+                <span class="close" id="close-login">&times;</span>
+                <h2>Login</h2>
+                <form id="logform" method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
 
-    <!-- Register Modal -->
-    <div class="modal" id="register-modal">
-        <div class="modal-content">
-            <span class="close" id="close-register">&times;</span>
-            <h2>Register</h2>
-            <form>
-                <label for="register-email">Email</label>
-                <input type="email" id="register-email" placeholder="Enter your email" required>
-                
-                <label for="register-password">Password</label>
-                <input type="password" id="register-password" placeholder="Create a password" required>
-                
-                <label for="register-confirm-password">Confirm Password</label>
-                <input type="password" id="register-confirm-password" placeholder="Confirm your password" required>
-                
-                <button type="submit" class="auth-btn">Register</button>
-            </form>
-            <button id="login2" class="ask">Do not have an account? Login</button>
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+
+                    <button type="submit" class="auth-btn">Login</button>
+                </form>
+                <div id="wrong">Incorrect input data. Try again.</div>
+                <button id="register" class="ask">Do not have an account? Register</button>
+            </div>
         </div>
-    </div>
+
+
+        <!-- Register Modal -->
+        <div class="modal" id="register-modal">
+            <div class="modal-content">
+                <span class="close" id="close-register">&times;</span>
+                <h2>Register</h2>
+                <form id="regform" method="POST" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <label for="register-name">Name</label>
+                    <input type="text" id="register-name" name="name" placeholder="Enter your name" required>
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="email" placeholder="Enter your email" required>
+
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" name="password" placeholder="Create a password" required>
+
+                    <label for="register-confirm-password">Confirm Password</label>
+                    <input type="password" id="register-confirm-password" name="confirm_password" placeholder="Confirm your password" required>
+
+                    <button type="submit" class="auth-btn">Register</button>
+                </form>
+                <div id="wrong2">Incorrect input data. Try again.</div>
+                <button id="login2" class="ask">Already have an account? Login</button>
+            </div>
+        </div>
 </body>
 </html>

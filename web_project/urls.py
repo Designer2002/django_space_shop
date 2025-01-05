@@ -18,9 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from hello.views import IndexView, LoginView, RegisterView, CatalogView, CartView, ProductView
-
-
+from hello.views import IndexView, LoginView, RegisterView, CatalogView, CartView, ProductView, AdminView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,6 +28,9 @@ urlpatterns = [
     path('product/<str:name>/', ProductView.as_view(), name='product'),
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('siteadmin/', AdminView.as_view(), name='siteadmin'),
+    path('cart/remove/<int:item_id>/', CartView.remove_from_cart, name='remove_from_cart'),
 ]
 urlpatterns += staticfiles_urlpatterns()
 

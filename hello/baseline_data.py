@@ -1,4 +1,4 @@
-from hello.models import Weapon
+from hello.models import Weapon, CartItem
 from hello.models import CustomUser
 
 users = [
@@ -118,3 +118,18 @@ def init():
     for user in users:
         user.set_password("123")
         user.save()
+
+
+def add_to_cart(user, weapon, quantity=1):
+    # Проверяем, существует ли уже запись в корзине для данного пользователя и оружия
+    cart_item, created = CartItem.objects.get_or_create(user=user, weapon=weapon)
+
+    if not created:
+        # Если запись уже существует, увеличиваем количество
+        cart_item.quantity += quantity
+    else:
+        # Если запись создана, устанавливаем количество
+        cart_item.quantity = quantity
+
+    # Сохраняем изменения в базе данных
+    cart_item.save()
