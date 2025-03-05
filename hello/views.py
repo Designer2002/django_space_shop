@@ -145,11 +145,13 @@ class LoginView(View):
     
 class RegisterView(View):
     def post(self, request):
+        print("Received POST request with data: %s", request.POST)
         from hello.models import CustomUser
         import web_project.settings
         from django.core.mail import send_mail
         form = RegisterForm(request.POST)
         if form.is_valid():
+            print("ERROR!!", form.cleaned_data)
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
@@ -163,7 +165,7 @@ class RegisterView(View):
                 login(request, user)
                 
                 # Отправка письма
-                send_mail("Succesful Registration", "Hello there and welcome! Now you are a user of the Space Shop!", web_project.settings.EMAIL_HOST_USER, [email])
+                #send_mail("Succesful Registration", "Hello there and welcome! Now you are a user of the Space Shop!", web_project.settings.EMAIL_HOST_USER, [email])
                 return JsonResponse({'success': True, 'redirect_url': reverse('catalog')})
             except Exception as e:
                 print("ERROR:", e)

@@ -166,6 +166,9 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(regform.action, {
             method: 'POST',
             body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken') // Add the CSRF token here
+            }
         })
         .then(response => {
             if (!response.ok) {
@@ -176,6 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return response.json();
         })
         .then(data => {
+            console.log(data.redirect_url)
             if (data.success) {
                 window.location.href = data.redirect_url;
             }

@@ -5,6 +5,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(label="Password", max_length=100)
 
 class RegisterForm(forms.Form):
+    name = forms.CharField(label="Username", max_length=100)
     email = forms.EmailField(label='Email', max_length=100)
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     confirm_password = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
