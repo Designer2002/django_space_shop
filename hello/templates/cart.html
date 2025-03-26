@@ -44,22 +44,23 @@
         <h1>Your Shopping Cart</h1>
         <div class="cart-items">
             <!-- Example Item -->
-            {% for item in cartitems %}
-            <div class="cart-item">
-                <img src="{% static 'images/gun2.png' %}" alt="Laser Gun">
-                <div class="item-details">
-                    <h2>item.weapon.name</h2>
-                    <p>Price: $item.weapon.price</p>
-                    <p>Quantity: item.quantity</p>
+            {% if cartitems %}
+                {% for item in cartitems %}
+                <div class="cart-item">
+                    <img src="{% static 'images/gun2.png' %}" alt="Laser Gun">
+                    <div class="item-details">
+                        <h2>item.weapon.name</h2>
+                        <p>Price: $item.weapon.price</p>
+                        <p>Quantity: item.quantity</p>
+                    </div>
+                    <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="remove-btn">Remove</button>
+                    </form>
                 </div>
-                <form method="POST" action="{% url 'remove_from_cart' item.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="remove-btn">Remove</button>
-                </form>
-            </div>
-            <!-- Add more items dynamically -->
-            {% endfor %}
-            {% if len(cartitems) == 0 %}
+                <!-- Add more items dynamically -->
+                {% endfor %}
+            {% else %}
             <h2>Your cart is empty</h2>
             <a href="{% url 'catalog' %}" class="shop">START SHOPPING NOW!!!</a>
             {% endif %}
@@ -68,8 +69,13 @@
 
         <!-- Total Section -->
         <div class="cart-total">
-            <h2>Total: $200</h2>
+            {% if total > 0 %}
+            <h2>Total: ${{ total }}</h2>
             <button class="checkout-btn">Proceed to Checkout</button>
+            {% else %}
+            <h2>Total: $0</h2>
+            <button class="checkout-btn">Go back shopping!</button>
+            {% endif %}
         </div>
     </main>
 

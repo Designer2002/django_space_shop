@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.urls import reverse
 
 from hello.forms import LoginForm, RegisterForm
-from hello.models import CartItem
+from hello.models import CartItem, Weapon
 
 
 class IndexView(View):
@@ -63,7 +63,9 @@ class CartView(View):
 
         # Получаем все записи корзины для текущего пользователя
         cart = CartItem.objects.filter(user=user)  # Здесь мы фильтруем по пользователю
-
+        total = 0
+        for item in cart:
+            total += item.price()
         print(request.build_absolute_uri())  # optional
 
         return render(
@@ -71,7 +73,8 @@ class CartView(View):
             'cart.html',
             {
                 'cartitems': cart,  # Передаем записи корзины в контекст
-                'user': user
+                'user': user,
+                'total' : total
             }
         )
 
@@ -81,6 +84,22 @@ class CartView(View):
             cart_item = get_object_or_404(CartItem, id=item_id, user=request.user)
             cart_item.delete()  # Удаляем элемент из корзины
             return redirect('cart_view')  # Перенаправляем на представление корзин
+    
+    def add_to_cart(request, weapon_id):
+        if request.method == 'POST':
+            user = request.user  # Get the current user
+            weapon = Weapon.objects.get(id=weapon_id)  # Get the weapon
+
+            # Check if the item is already in the cart
+            cart_item, created = CartItem.objects.get_or_create(user=user, weapon=weapon)
+
+            if not created:
+                cart_item.quantity += 1  # Increase quantity if item already in cart
+            cart_item.save()  # Save the cart item
+
+            return JsonResponse({'success': True, 'message': 'Item added to cart!', 'quantity': cart_item.quantity})
+
+        return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
 
 class ProductView(View):
     def get(self, request, name=None, *args, **kwargs):

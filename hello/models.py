@@ -30,3 +30,6 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s cart: {self.quantity} x {self.weapon.name}"
+    def price(self):
+        """Calculate the total price for this cart item."""
+        return self.weapon.price * self.quantity  

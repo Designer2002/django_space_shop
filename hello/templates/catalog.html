@@ -14,6 +14,7 @@
     {% endblock %}
     {% block extrascripts %}
     <script src="{% static 'js/auth.js' %}" type="text/JavaScript" defer></script>
+    <script src="{% static 'js/buy.js' %}" type="text/JavaScript" defer></script>
     {% endblock %}
     
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
@@ -51,9 +52,9 @@
                     <p class="plain">Power: {{weapon.power_consumption}}</p>
                     <p class="plain">Fire Rate: {{weapon.range}}</p>
                     <p class="price plain">{{weapon.price}}$</p>
-                    <button class="btn">Add to Cart</button>
+                    <button id="addtocart" class="btn">Add to Cart</button>
                 </div>
-            </a>
+            
             {% endfor %}
         </div>
     </main>

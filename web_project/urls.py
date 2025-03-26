@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+from hello.baseline_data import add_to_cart
 from hello.views import IndexView, LoginView, RegisterView, CatalogView, CartView, ProductView, AdminView, LogoutView
 
 urlpatterns = [
@@ -31,6 +32,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('siteadmin/', AdminView.as_view(), name='siteadmin'),
     path('cart/remove/<int:item_id>/', CartView.remove_from_cart, name='remove_from_cart'),
+    path('add-to-cart/<int:weapon_id>/', add_to_cart, name='add_to_cart')
 ]
 urlpatterns += staticfiles_urlpatterns()
 
