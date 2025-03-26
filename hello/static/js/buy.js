@@ -1,3 +1,4 @@
+const buybtn = document.getElementById("addtocart")
 buybtn.onclick = function() {
     const weaponId = buybtn.getAttribute("data-weapon-id");
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Get CSRF token

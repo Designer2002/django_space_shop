@@ -45,16 +45,18 @@
         <h1>Catalog of Futuristic Weapons</h1>
         <div class="catalog-grid">
             {% for weapon in weapons %}
-            <a  href="{% url 'product' name=weapon.name %}">
+            <div>
                 <div class="product-card">
-                    <img src="{% static 'images/gun3.jpg' %}" alt="Laser Gun">
-                    <h2 class="plain">{{weapon.name}}</h2>
-                    <p class="plain">Power: {{weapon.power_consumption}}</p>
-                    <p class="plain">Fire Rate: {{weapon.range}}</p>
-                    <p class="price plain">{{weapon.price}}$</p>
+                    <a   href="{% url 'product' name=weapon.name %}">
+                        <img src="{% static 'images/gun3.jpg' %}" alt="Laser Gun">
+                        <h2 class="plain">{{weapon.name}}</h2>
+                        <p class="plain">Power: {{weapon.power_consumption}}</p>
+                        <p class="plain">Fire Rate: {{weapon.range}}</p>
+                        <p class="price plain">{{weapon.price}}$</p>
+                    </a>
                     <button id="addtocart" class="btn">Add to Cart</button>
                 </div>
-            
+            </div>
             {% endfor %}
         </div>
     </main>

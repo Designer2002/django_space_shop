@@ -113,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     openLoginBtns.forEach((openLoginBtn) =>
     {
+        if (openLoginBtn === undefined) return;
         openLoginBtn.addEventListener("click", () => {
 
             if(loginModal.style.display == "flex")
